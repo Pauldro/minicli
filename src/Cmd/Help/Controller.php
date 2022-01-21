@@ -115,4 +115,40 @@ abstract class Controller extends ParentController {
 		}
 		return static::OPTIONS_DEFINITIONS[$opt];
 	}
+
+	/**
+	 * Return String Length of Longest Command
+	 * @return int
+	 */
+	protected function getLongestCommandLength() {
+		$length = 0;
+		foreach (array_keys(static::COMMAND_DEFINITIONS) as $cmd) {
+			if (strlen($cmd) > $length) {
+				$length = strlen($cmd);
+			}
+		}
+		return $length;
+	}
+
+	/**
+	 * Pad Command to Desired String Length
+	 * @param  string $cmd    Command
+	 * @param  int    $length Desired Length
+	 * @return string
+	 */
+	protected function getCommandToLength($cmd, $length) {
+		return str_pad($cmd, $length, ' ');
+	}
+
+	/**
+	 * Return Definition of Command if Definition Exists
+	 * @param  string $cmd Command
+	 * @return string
+	 */
+	public function getCommandDefinition($cmd) {
+		if (array_key_exists($cmd, static::COMMAND_DEFINITIONS) === false) {
+			return '';
+		}
+		return static::COMMAND_DEFINITIONS[$cmd];
+	}
 }
