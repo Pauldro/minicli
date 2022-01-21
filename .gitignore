@@ -1,0 +1,4 @@
+# Editor files
+.ftpconfig
+.ftpignore
+project.cson
