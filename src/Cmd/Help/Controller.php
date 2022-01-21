@@ -1,4 +1,6 @@
 <?php namespace Pauldro\Minicli\Cmd\Help;
+// PHP Core
+use ReflectionClass;
 // Minicli
 use Minicli\App;
 use Minicli\Command\CommandController;
@@ -29,7 +31,6 @@ abstract class Controller extends ParentController {
 		$this->displayHelp();
 
 		$printer = $this->getPrinter();
-		$printer->info(__NAMESPACE__);
 		$printer->newline();
 		$printer->newline();
 	}
@@ -74,7 +75,9 @@ abstract class Controller extends ParentController {
 	 */
 	protected function displaySubcommand() {
 		if (in_array($this->input->lastArg(), static::SUBCOMMANDS)) {
-			$ns = __NAMESPACE__ . '\\' . ucfirst(static::COMMAND) . '\\';
+			$reflector = new ReflectionClass(get_class($this));
+			$baseNs = $reflector->getNamespaceName();
+			$ns = $baseNs . '\\' . ucfirst(static::COMMAND) . '\\';
 			$class = $ns . ucfirst($this->input->lastArg()) . 'Controller';
 			$handler = new $class();
 			$handler->boot($this->app);
