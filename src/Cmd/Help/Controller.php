@@ -27,7 +27,9 @@ abstract class Controller extends ParentController {
 		$this->displayUsage();
 		$this->displayOptions();
 		$this->displayHelp();
+
 		$printer = $this->getPrinter();
+		$printer->info(__NAMESPACE__);
 		$printer->newline();
 		$printer->newline();
 	}
@@ -67,6 +69,21 @@ abstract class Controller extends ParentController {
 	}
 
 	/**
+	 * Display Subcommand
+	 * @return string
+	 */
+	protected function displaySubcommand() {
+		if (in_array($this->input->lastArg(), static::SUBCOMMANDS)) {
+			$ns = __NAMESPACE__ . '\\' . ucfirst(static::COMMAND) . '\\';
+			$class = $ns . ucfirst($this->input->lastArg()) . 'Controller';
+			$handler = new $class();
+			$handler->boot($this->app);
+			$handler->handle();
+			return true;
+		}
+	}
+
+	/**
 	 * Return String Length of Longest Command
 	 * @return int
 	 */
@@ -96,8 +113,8 @@ abstract class Controller extends ParentController {
 
 	/**
 	 * Pad Command to Desired String Length
-	 * @param  string $cmd    Command
-	 * @param  int    $length Desired Length
+	 * @param  string $cmd	  Command
+	 * @param  int	  $length Desired Length
 	 * @return string
 	 */
 	protected function getOptToLength($cmd, $length) {
@@ -132,8 +149,8 @@ abstract class Controller extends ParentController {
 
 	/**
 	 * Pad Command to Desired String Length
-	 * @param  string $cmd    Command
-	 * @param  int    $length Desired Length
+	 * @param  string $cmd	  Command
+	 * @param  int	  $length Desired Length
 	 * @return string
 	 */
 	protected function getCommandToLength($cmd, $length) {
