@@ -20,8 +20,8 @@ abstract class Controller extends ParentController {
 	}
 
 	/**
-	 * Return Default Display
-	 * @return string
+	 * Display Command
+	 * @return void
 	 */
 	protected function display() {
 		$this->displayUsage();
@@ -33,8 +33,8 @@ abstract class Controller extends ParentController {
 	}
 
 	/**
-	 * Return Command Usage Display
-	 * @return string
+	 * Display Command Usage
+	 * @return void
 	 */
 	protected function displayUsage() {
 		$printer = $this->getPrinter();
@@ -43,8 +43,8 @@ abstract class Controller extends ParentController {
 	}
 
 	/**
-	 * Return Command Options Display
-	 * @return string
+	 * Display Command Options
+	 * @return void
 	 */
 	protected function displayOptions() {
 		$printer = $this->getPrinter();
@@ -57,8 +57,8 @@ abstract class Controller extends ParentController {
 	}
 
 	/**
-	 * Return Command Help Display
-	 * @return string
+	 * Display Command Help
+	 * @return void
 	 */
 	protected function displayHelp() {
 		$printer = $this->getPrinter();
