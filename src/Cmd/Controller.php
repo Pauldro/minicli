@@ -22,9 +22,9 @@ abstract class Controller extends CommandController {
 	}
 
 	/**
-     * @return Printer
-     */
-    protected function getPrinter() {
-        return $this->getApp()->getPrinter();
-    }
+	 * @return Printer
+	 */
+	protected function getPrinter() {
+		return $this->getApp()->getPrinter();
+	}
 }
