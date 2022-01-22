@@ -29,6 +29,7 @@ abstract class Controller extends ParentController {
 		$this->displayUsage();
 		$this->displayOptions();
 		$this->displayHelp();
+		$this->displaySubcommands();
 
 		$printer = $this->getPrinter();
 		$printer->newline();
@@ -56,6 +57,19 @@ abstract class Controller extends ParentController {
 
 		foreach (static::OPTIONS as $option => $example) {
 			$printer->line(sprintf('%s%s%s', $printer->spaces(2), $this->getOptToLength($example, $optLength), $this->getOptDefinition($option)));
+		}
+	}
+
+	/**
+	 * Display Subcommands
+	 * @return void
+	 */
+	protected function displaySubcommands() {
+		$printer = $this->getPrinter();
+		$printer->info('Subcommands:');
+		
+		foreach (static::SUBCOMMANDS as $cmd => $description) {
+			$printer->line(sprintf('%s%s%s', $printer->spaces(2), $cmd, $description));
 		}
 	}
 
