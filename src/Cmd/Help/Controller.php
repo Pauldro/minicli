@@ -66,10 +66,10 @@ abstract class Controller extends ParentController {
 	 */
 	protected function displaySubcommands() {
 		$printer = $this->getPrinter();
-		$printer->info('Subcommands:');
-		
-		foreach (static::SUBCOMMANDS as $cmd => $description) {
-			$printer->line(sprintf('%s%s%s', $printer->spaces(2), $cmd, $description));
+		$printer->info('See Also:');
+
+		foreach (static::SUBCOMMANDS as $cmd) {
+			$printer->line(sprintf('%s%s%s%s%s', $printer->spaces(2), 'help ', static::COMMAND, ' ', $cmd));
 		}
 	}
 
