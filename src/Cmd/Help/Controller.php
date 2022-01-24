@@ -12,6 +12,7 @@ use Pauldro\Minicli\Cmd\Controller as ParentController;
  */
 abstract class Controller extends ParentController {
 	const COMMAND = '';
+	const DESCRIPTION = '';
 	const COMMAND_DEFINITIONS = [];
 	const OPTIONS = [];
 	const OPTIONS_DEFINITIONS = [];
@@ -80,7 +81,7 @@ abstract class Controller extends ParentController {
 	protected function displayHelp() {
 		$printer = $this->getPrinter();
 		$printer->info('Help:');
-		$printer->line(sprintf('%s%s', $printer->spaces(2), static::COMMAND_DEFINITIONS[static::COMMAND]));
+		$printer->line(sprintf('%s%s', $printer->spaces(2), static::DESCRIPTION));
 	}
 
 	/**
