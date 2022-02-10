@@ -27,4 +27,12 @@ abstract class Controller extends CommandController {
 	protected function getPrinter() {
 		return $this->getApp()->getPrinter();
 	}
+
+	/**
+	 * @param $param
+	 * @return string
+	 */
+	protected function getParam($param) {
+		return $this->input->getParam($param);
+	}
 }
