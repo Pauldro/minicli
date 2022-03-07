@@ -35,7 +35,12 @@ class App extends MinicliApp {
 		$controller = $this->command_registry->getCallableController($input->command, $input->subcommand);
 
 		if (empty($controller)) {
-			Printer::getInstance()->error("Controller not found for $input->command $input->subcommand");
+			$cmd = $input->command;
+
+			if (strtolower($input->subcommand) == 'default') {
+				$cmd .= " $input->subcommand";
+			}
+			Printer::getInstance()->error("Controller not found for $cmd");
 			exit;
 		}
 
