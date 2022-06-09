@@ -17,6 +17,7 @@ abstract class Controller extends ParentController {
 	const OPTIONS = [];
 	const OPTIONS_DEFINITIONS = [];
 	const SUBCOMMANDS = [];
+	const NOTES = [];
 
 	public function handle() {
 		$this->display();
@@ -31,6 +32,7 @@ abstract class Controller extends ParentController {
 		$this->displayOptions();
 		$this->displayHelp();
 		$this->displaySubcommands();
+		$this->displayNotes();
 
 		$printer = $this->getPrinter();
 		$printer->newline();
@@ -74,6 +76,22 @@ abstract class Controller extends ParentController {
 
 		foreach (static::SUBCOMMANDS as $cmd) {
 			$printer->line(sprintf('%s%s%s%s%s', $printer->spaces(2), 'help ', static::COMMAND, ' ', $cmd));
+		}
+	}
+
+	/**
+	 * Display Notes
+	 * @return void
+	 */
+	protected function displayNotes() {
+		$printer = $this->getPrinter();
+		
+		if (empty(static::NOTES) === false) {
+			$printer->info('Notes:');
+		}
+
+		foreach (static::NOTES as $line) {
+			$printer->line(sprintf('%s%s%s', $printer->spaces(2), ' ', $line));
 		}
 	}
 
