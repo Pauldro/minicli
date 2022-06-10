@@ -2,3 +2,4 @@
 .ftpconfig
 .ftpignore
 project.cson
+.vscode/
