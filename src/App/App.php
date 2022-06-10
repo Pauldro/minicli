@@ -1,9 +1,6 @@
 <?php namespace Pauldro\Minicli\App;
 // Minicli Library
 use Minicli\App as MinicliApp;
-use Minicli\Command\CommandCall;
-use Minicli\Command\CommandRegistry;
-use Minicli\Config;
 // Pauldro Minicli
 use Pauldro\Minicli\Cli\Printer;
 use Pauldro\Minicli\Cmd;
@@ -13,8 +10,7 @@ class App extends MinicliApp {
 	 public function __construct(array $config = null) {
 		parent::__construct($this->parseConfig($config));
 
-		$printer = Printer::getInstance();
-		$this->addService('printer', $printer);
+		$this->addService('printer', Printer::getInstance());
 		$this->addService('command_registry', new Cmd\Registry($this->config->app_path));
 	}
 

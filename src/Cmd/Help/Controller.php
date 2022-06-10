@@ -1,9 +1,6 @@
 <?php namespace Pauldro\Minicli\Cmd\Help;
 // PHP Core
 use ReflectionClass;
-// Minicli
-use Minicli\App;
-use Minicli\Command\CommandController;
 // Pauldro\Minicli
 use Pauldro\Minicli\Cmd\Controller as ParentController;
 
@@ -46,7 +43,7 @@ abstract class Controller extends ParentController {
 	protected function displayUsage() {
 		$printer = $this->getPrinter();
 		$printer->info('Usage:');
-		$printer->line(sprintf('%s%s', $printer->spaces(2), static::COMMAND.' [options]'));
+		$printer->line(sprintf('%s%s', $printer->spaces(2), static::COMMAND . ' [options]'));
 	}
 
 	/**
@@ -69,7 +66,7 @@ abstract class Controller extends ParentController {
 	 */
 	protected function displaySubcommands() {
 		$printer = $this->getPrinter();
-		
+
 		if (empty(static::SUBCOMMANDS) === false) {
 			$printer->info('See Also:');
 		}
@@ -85,7 +82,7 @@ abstract class Controller extends ParentController {
 	 */
 	protected function displayNotes() {
 		$printer = $this->getPrinter();
-		
+
 		if (empty(static::NOTES) === false) {
 			$printer->info('Notes:');
 		}

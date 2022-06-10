@@ -19,7 +19,7 @@ class Namespacer {
 	public function getName() {
 		return $this->name;
 	}
-	
+
 	/**
 	 * Load Controllers
 	 * @param  string $commands_path
@@ -60,7 +60,7 @@ class Namespacer {
 
 		$controller_class = str_replace('.php', '', $filename);
 		$command_name = strtolower(str_replace('Controller', '', $controller_class));
-		$full_class_name = sprintf("App\\Cmd\\%s\\%s", $this->getName(), $controller_class);
+		$full_class_name = sprintf('App\\Cmd\\%s\\%s', $this->getName(), $controller_class);
 
 		/** @var Controller $controller */
 		$controller = new $full_class_name();
