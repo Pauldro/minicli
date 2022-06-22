@@ -6,6 +6,8 @@ use Lib\Cli\Printer;
 
 /**
  * Base Class for Handling Executing Commands
+ * 
+ * @property Call $input
  */
 abstract class Controller extends CommandController {
 	/**
