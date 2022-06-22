@@ -56,7 +56,6 @@ class Data implements \IteratorAggregate, \ArrayAccess {
 
 	/**
 	 * Provides direct reference access to variables in the $data array
-	 *
 	 * Otherwise the same as get()
 	 *
 	 * @param  string $key
@@ -68,7 +67,6 @@ class Data implements \IteratorAggregate, \ArrayAccess {
 
 	/**
 	 * Enables use of $var('key')
-	 *
 	 * @param string $key
 	 * @return mixed
 	 */
@@ -78,14 +76,29 @@ class Data implements \IteratorAggregate, \ArrayAccess {
 
 	/**
 	 * Provides direct reference access to set values in the $data array
-	 *
 	 * @param  string $key
 	 * @param  mixed $value
 	 * @return $this
-	 *
 	 */
 	public function __set($key, $value) {
 		$this->set($key, $value);
+	}
+
+	/**
+	 * Ensures that isset() and empty() work for this classes properties. 
+	 * @param string $key
+	 * @return bool
+	 */
+	public function __isset($key) {
+		return isset($this->data[$key]);
+	}
+
+	/**
+	 * Ensures that unset() works for this classes data. 
+	 * @param string $key
+	 */
+	public function __unset($key) {
+		$this->remove($key); 
 	}
 
 	/**
@@ -148,7 +161,6 @@ class Data implements \IteratorAggregate, \ArrayAccess {
 	 * ~~~~~
 	 * @param string $key Name of property you want to remove
 	 * @return $this
-	 *
 	 */
 	public function remove($key) {
 		unset($this->data[$key]);
@@ -160,7 +172,6 @@ class Data implements \IteratorAggregate, \ArrayAccess {
 	============================================================= */
 	/**
 	 * Enables the object data properties to be iterable as an array
-	 * 
 	 * @return \ArrayObject
 	 */
 	public function getIterator() {
@@ -172,7 +183,6 @@ class Data implements \IteratorAggregate, \ArrayAccess {
 	============================================================= */
 	/**
 	 * Sets an index in the Array.
-	 *
 	 * @param int|string              $key    Key of item to set.
 	 * @param int|string|array|object $value  Value of item.
 	 */
@@ -181,8 +191,6 @@ class Data implements \IteratorAggregate, \ArrayAccess {
 	}
 
 	/**
-	 * Returns the value of the item at the given index, or false if not set.
-	 *
 	 * @param  int|string               $key  Key of item to retrieve.
 	 * @return int|string|array|object        Value of item requested, or false if it doesn't exist.
 	 */
@@ -195,7 +203,6 @@ class Data implements \IteratorAggregate, \ArrayAccess {
 	 * Unsets the value at the given index.
 	 * @param  int|string $key Key of the item to unset.
 	 * @return bool            True if item existed and was unset. False if item didn't exist.
-	 *
 	 */
 	public function offsetUnset($key) {
 		if ($this->__isset($key)) {
@@ -208,7 +215,6 @@ class Data implements \IteratorAggregate, \ArrayAccess {
 
 	/**
 	 * Determines if the given index exists in this WireData.
-	 *
 	 * @param  int|string $key  Key of the item to check for existence.
 	 * @return bool             True if the item exists, false if not.
 	 */
