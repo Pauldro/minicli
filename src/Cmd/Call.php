@@ -16,7 +16,8 @@ class Call extends CommandCall {
 	 * @return string
 	 */
 	public function lastArg() {
-		return $this->args[sizeof($this->args) - 1];
+		$i = (sizeof($this->args) - 1);
+		return array_key_exists($i, $this->args) ? $this->args[$i] : '';
 	}
 
 	/**
