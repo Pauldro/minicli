@@ -1,4 +1,6 @@
 <?php namespace Pauldro\Minicli\Cmd;
+// Base PHP
+use ReflectionClass;
 
 /**
  * Namespacer
@@ -61,6 +63,12 @@ class Namespacer {
 		$controller_class = str_replace('.php', '', $filename);
 		$command_name = strtolower(str_replace('Controller', '', $controller_class));
 		$full_class_name = sprintf('App\\Cmd\\%s\\%s', $this->getName(), $controller_class);
+
+		$reflector = new ReflectionClass($full_class_name);
+		
+		if ($reflector->isAbstract()) {
+			return false;
+		}
 
 		/** @var Controller $controller */
 		$controller = new $full_class_name();
