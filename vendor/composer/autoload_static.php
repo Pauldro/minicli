@@ -22,12 +22,16 @@ class ComposerStaticInit5b0c1223713879abc83a3c5847bc51a6
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Pauldro\\Minicli\\App\\App' => __DIR__ . '/../..' . '/src/App/App.php',
         'Pauldro\\Minicli\\Cli\\Printer' => __DIR__ . '/../..' . '/src/Cli/Printer.php',
         'Pauldro\\Minicli\\Cmd\\Call' => __DIR__ . '/../..' . '/src/Cmd/Call.php',
         'Pauldro\\Minicli\\Cmd\\Controller' => __DIR__ . '/../..' . '/src/Cmd/Controller.php',
         'Pauldro\\Minicli\\Cmd\\Help\\Controller' => __DIR__ . '/../..' . '/src/Cmd/Help/Controller.php',
         'Pauldro\\Minicli\\Cmd\\Namespacer' => __DIR__ . '/../..' . '/src/Cmd/Namespacer.php',
         'Pauldro\\Minicli\\Cmd\\Registry' => __DIR__ . '/../..' . '/src/Cmd/Registry.php',
+        'Pauldro\\Minicli\\Data' => __DIR__ . '/../..' . '/src/Data.php',
+        'Pauldro\\Minicli\\DataArray' => __DIR__ . '/../..' . '/src/DataArray.php',
+        'Pauldro\\Minicli\\Util\\Logger' => __DIR__ . '/../..' . '/src/Util/Logger.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
