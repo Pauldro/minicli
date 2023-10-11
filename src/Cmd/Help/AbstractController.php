@@ -1,12 +1,14 @@
 <?php namespace Pauldro\Minicli\Cmd\Help;
 // PHP Core
 use ReflectionClass;
+// Pauldro\Minicli
+use Pauldro\Minicli\Cmd\AbstractController as ParentController;
 
 /**
- * Controller
+ * AbstractController
  * Handles Displaying the Help Commands
  */
-abstract class Controller extends AbstractController {
+abstract class AbstractController extends ParentController {
 	const COMMAND = '';
 	const DESCRIPTION = '';
 	const COMMAND_DEFINITIONS = [];
