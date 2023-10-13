@@ -24,17 +24,87 @@ abstract class AbstractController extends CommandController {
 	}
 
 	/**
+	 * @param $param
+	 * @return string
+	 */
+	protected function getParam($param) {
+		return $this->input->getParam($param);
+	}
+
+	/**
 	 * @return Printer
 	 */
 	protected function getPrinter() {
 		return $this->getApp()->getPrinter();
 	}
 
+/* =============================================================
+	Init Functions
+============================================================= */
 	/**
-	 * @param $param
+	 * Initialize App
+	 * @return bool
+	 */
+	protected function init() {
+		return true;
+	}
+/* =============================================================
+	Logging Functions
+============================================================= */
+	/**
+	 * Return the Filepath to the command log
 	 * @return string
 	 */
-	protected function getParam($param) {
-		return $this->input->getParam($param);
+	protected function getLogCmdFilePath() {
+		return $this->app->config->log_dir . '/' . static::LOG_CMD_NAME;
+	}
+
+	/**
+	 * Return the Filepath to the error log
+	 * @return string
+	 */
+	protected function getLogErrorFilePath() {
+		return $this->app->config->log_dir . '/' . static::LOG_ERROR_NAME;
+	}
+	
+	/**
+	 * Log Command sent to App
+	 * @return void
+	 */
+	protected function logCommand() {
+		if (array_key_exists('LOG_COMMANDS', $_ENV) === false || boolval($_ENV['LOG_COMMANDS']) === false) {
+			return true;
+		}
+		$file = $this->getLogCmdFilePath();
+		$cmd  = implode(' ', $this->input->getRawArgs());
+
+		$log = Logger::instance();
+		$log->log($file, $cmd);
+	}
+
+	/**
+	 * Log Command sent to App
+	 * @return void
+	 */
+	protected function logError($msg) {
+		if (array_key_exists('LOG_ERRORS', $_ENV) === false || boolval($_ENV['LOG_ERRORS']) === false) {
+			return true;
+		}
+		$file = $this->getLogErrorFilePath();
+		$cmd  = implode(' ', $this->input->getRawArgs());
+
+		$log = Logger::instance();
+		$log->log($file, $cmd);
+	}
+
+	/**
+	 * Log Error Message
+	 * @param  string $msg
+	 * @return false
+	 */
+	protected function error($msg) {
+		$this->getPrinter()->error($msg);
+		$this->logError($msg);
+		return false;
 	}
 }
