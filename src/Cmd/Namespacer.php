@@ -6,6 +6,8 @@ use ReflectionException;
 /**
  * Namespacer
  * Ties Controller to a Command
+ * 
+ * @property string $app_namespace Extra Namespace for App (use for separate script drivers)
  */
 class Namespacer {
 	protected $app_namespace = '';

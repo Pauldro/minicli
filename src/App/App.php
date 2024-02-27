@@ -10,8 +10,19 @@ class App extends MinicliApp {
 	 public function __construct(array $config = null) {
 		parent::__construct($this->parseConfig($config));
 
+		$this->addServices();
+	}
+
+	/**
+	 * Add Services (printer, command_registry)
+	 * @return void
+	 */
+	protected function addServices() {
 		$this->addService('printer', Printer::getInstance());
-		$this->addService('command_registry', new Cmd\Registry($this->config->app_path));
+
+		$reg = new Cmd\Registry($this->config->app_path);
+		$reg->setAppNamespace($this->config->app_namespace);
+		$this->addService('command_registry', $reg);
 	}
 
 	public function parseConfig(array $config = null) {
