@@ -1,6 +1,7 @@
 <?php namespace Pauldro\Minicli\Cmd;
 // Base PHP
 use ReflectionClass;
+use ReflectionException;
 
 /**
  * Namespacer
@@ -81,7 +82,12 @@ class Namespacer {
 		}
 		
 		$full_class_name = sprintf($namespace . '\\%s\\%s', $this->getName(), $controller_class);
-		$reflector = new ReflectionClass($full_class_name);
+
+		try {
+			$reflector = new ReflectionClass($full_class_name);
+		} catch (ReflectionException $e) {
+			return false;
+		}
 		
 		if ($reflector->isAbstract()) {
 			return false;
