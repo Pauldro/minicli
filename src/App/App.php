@@ -46,7 +46,7 @@ class App extends MinicliApp {
 			exit;
 		}
 
-		if ($controller instanceof Cmd\Controller) {
+		if ($controller instanceof Cmd\AbstractController) {
 			$controller->boot($this);
 			$controller->run($input);
 			$controller->teardown();
