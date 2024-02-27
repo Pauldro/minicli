@@ -7,11 +7,22 @@ use ReflectionClass;
  * Ties Controller to a Command
  */
 class Namespacer {
+	protected $app_namespace = '';
 	protected $name;
 	protected $controllers = [];
 
 	public function __construct($name) {
 		$this->name = $name;
+	}
+
+	/**
+	 * Set Extra Namespace
+	 * NOTE: used for script drivers and adding 1 extra layer of namespaceing
+	 * @param  string $ns
+	 * @return void
+	 */
+	public function setAppNamespace($ns) {
+		$this->app_namespace = $ns;
 	}
 
 	/**
@@ -62,8 +73,14 @@ class Namespacer {
 
 		$controller_class = str_replace('.php', '', $filename);
 		$command_name = strtolower(str_replace('Controller', '', $controller_class));
-		$full_class_name = sprintf('App\\Cmd\\%s\\%s', $this->getName(), $controller_class);
+		
+		$namespace = 'App\\Cmd';
 
+		if ($this->app_namespace) {
+			$namespace .= "\\$this->app_namespace";
+		}
+		
+		$full_class_name = sprintf($namespace . '\\%s\\%s', $this->getName(), $controller_class);
 		$reflector = new ReflectionClass($full_class_name);
 		
 		if ($reflector->isAbstract()) {
