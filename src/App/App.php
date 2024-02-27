@@ -30,6 +30,12 @@ class App extends MinicliApp {
 
 		$controller = $this->command_registry->getCallableController($input->command, $input->subcommand);
 
+		try {
+			$controller = $this->command_registry->getCallableController($input->command, $input->subcommand);
+		} catch (\ReflectionException $e) {
+			$controller = null;
+		}
+
 		if (empty($controller)) {
 			$cmd = $input->command;
 
