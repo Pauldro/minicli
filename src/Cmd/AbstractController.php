@@ -24,6 +24,7 @@ abstract class AbstractController extends CommandController {
 	}
 
 	/**
+	 * Return Parameter Value
 	 * @param $param
 	 * @return string
 	 */
@@ -32,9 +33,26 @@ abstract class AbstractController extends CommandController {
 	}
 
 	/**
+	 * Return Parameter Value as array
+	 * @param  string $param      Parameter Key
+	 * @param  string $delimeter  Delimiter
+	 * @return array
+	 */
+	protected function getParamArray($param, $delimeter = ",") {
+		return explode($delimeter, $this->getParam($param));
+	}
+
+	/**
 	 * @return Printer
 	 */
 	protected function getPrinter() {
+		return $this->getApp()->getPrinter();
+	}
+
+	/**
+	 * @return Printer
+	 */
+	protected function printer() {
 		return $this->getApp()->getPrinter();
 	}
 
