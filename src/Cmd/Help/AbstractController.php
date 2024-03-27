@@ -16,6 +16,7 @@ abstract class AbstractController extends ParentController {
 	const OPTIONS_DEFINITIONS = [];
 	const SUBCOMMANDS = [];
 	const NOTES = [];
+	const INTRO_DELIMITER = '/////////////////////////////////////////////////////////';
 
 	public function handle() {
 		$this->display();
