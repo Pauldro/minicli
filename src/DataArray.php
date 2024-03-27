@@ -32,6 +32,19 @@ class DataArray implements \IteratorAggregate, \ArrayAccess, \Countable {
 	}
 
 	/**
+	 * Return Array of Arrays
+	 * NOTE: use if listing Data Classes 
+	 * @return array[array]
+	 */
+	public function getJsonArray() {
+		$data = [];
+		foreach ($this->data as $item) {
+			$data[] = $item->data;
+		}
+		return $data;
+	}
+
+	/**
 	 * Returns a regular PHP array of all keys used in this DataArray.
 	 * @return array Keys used in the DataArray.
 	 */
@@ -90,6 +103,34 @@ class DataArray implements \IteratorAggregate, \ArrayAccess, \Countable {
 	 */
 	public function add($item) {
 		$this->data[] = $item;
+		return $this;
+	}
+
+	/**
+	 * Set Entire DataArray.
+	 * ~~~~~
+	 * $list->set($items); 
+	 * ~~~~~
+	 * @param  array Set Array
+	 * @return $this
+	 */
+	public function setArray($items = []) {
+		$this->data = $items;
+	}
+
+/* =============================================================
+	Manipulation Functions
+============================================================= */
+	/**
+	 * Remove the given item or index from the WireArray (if it exists).
+	 * @param int|string $key Item to remove (object), or index of that item. 
+	 * @return $this This instance.
+	 */
+	public function remove($key) {
+		if(array_key_exists($key, $this->data)) {
+			$item = $this->data[$key];
+			unset($this->data[$key]); 
+		}
 		return $this;
 	}
 
