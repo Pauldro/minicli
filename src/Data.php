@@ -81,7 +81,12 @@ class Data implements \IteratorAggregate, \ArrayAccess {
 	 * @return $this
 	 */
 	public function __set($key, $value) {
-		$this->set($key, $value);
+		$method = "set".ucfirst($key);
+		
+		if (method_exists($this, $method)) {
+			return $this->$method($value);
+		}
+		return $this->set($key, $value); 
 	}
 
 	/**
@@ -219,6 +224,15 @@ class Data implements \IteratorAggregate, \ArrayAccess {
 	 * @return bool             True if the item exists, false if not.
 	 */
 	public function offsetExists($key) {
+		return $this->__isset($key);
+	}
+
+	/**
+	 * Determines if the given index exists in this WireData.
+	 * @param  int|string $key  Key of the item to check for existence.
+	 * @return bool             True if the item exists, false if not.
+	 */
+	public function has($key) {
 		return $this->__isset($key);
 	}
 }
