@@ -2,7 +2,6 @@
 
 /**
  * Logger
- * 
  * Updates Log Files
  */
 class Logger {
@@ -20,6 +19,15 @@ class Logger {
 	}
 
 	/**
+	 * Return array formatted as string for Log delimited by \t
+	 * @param  array $parts
+	 * @return string
+	 */
+	public function createLogString($parts = []) {
+		return implode("\t", $parts);
+	}
+
+	/**
 	 * Record Log Message
 	 * @param  string $file  /path/to/file/
 	 * @param  string $text
@@ -32,7 +40,7 @@ class Logger {
 			$content = file_get_contents($file);
 		}
 
-		$line = implode("\t", [date('Ymd'), date('His'), $text]) . PHP_EOL;
+		$line = $this->createLogString([date('Ymd'), date('His'), $text]). PHP_EOL;
 		return file_put_contents($file, $content . $line);
 	}
 }
