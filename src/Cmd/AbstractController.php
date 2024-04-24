@@ -1,8 +1,9 @@
 <?php namespace Pauldro\Minicli\Cmd;
 // Minicli
 use Minicli\Command\CommandController;
-// Printer
-use Lib\Cli\Printer;
+// Pauldro Minicli
+use Pauldro\Minicli\Cli\Printer;
+use Pauldro\Minicli\Util\Logger;
 
 /**
  * Class for Handling Executing Commands
@@ -10,6 +11,9 @@ use Lib\Cli\Printer;
  * @property Call $input
  */
 abstract class AbstractController extends CommandController {
+	const LOG_CMD_NAME   = 'commands.log';
+	const LOG_ERROR_NAME = 'errors.log';
+
 	/**
 	 * Return boolean value for parameter
 	 * @param  string $param Parameter to get Value from
@@ -25,7 +29,7 @@ abstract class AbstractController extends CommandController {
 
 	/**
 	 * Return Parameter Value
-	 * @param $param
+	 * @param  string $param
 	 * @return string
 	 */
 	protected function getParam($param) {
@@ -66,15 +70,24 @@ abstract class AbstractController extends CommandController {
 	protected function init() {
 		return true;
 	}
+	
 /* =============================================================
 	Logging Functions
 ============================================================= */
+	/**
+	 * Return Path to Log Directory
+	 * @return string
+	 */
+	protected function getLogDir() {
+		return rtrim($this->app->config->log_dir, '/') . '/';
+	}
+
 	/**
 	 * Return the Filepath to the command log
 	 * @return string
 	 */
 	protected function getLogCmdFilePath() {
-		return $this->app->config->log_dir . '/' . static::LOG_CMD_NAME;
+		return $this->getLogDir() . static::LOG_CMD_NAME;
 	}
 
 	/**
@@ -82,7 +95,18 @@ abstract class AbstractController extends CommandController {
 	 * @return string
 	 */
 	protected function getLogErrorFilePath() {
-		return $this->app->config->log_dir . '/' . static::LOG_ERROR_NAME;
+		return $this->getLogDir() . static::LOG_ERROR_NAME;
+	}
+
+	/**
+	 * Setup Logs Directory
+	 * @return bool
+	 */
+	protected function setupLogDir() {
+		if (is_dir($this->getLogDir())) {
+			return true;
+		}
+		return mkdir($this->getLogDir());
 	}
 	
 	/**
@@ -90,9 +114,14 @@ abstract class AbstractController extends CommandController {
 	 * @return void
 	 */
 	protected function logCommand() {
-		if (array_key_exists('LOG_COMMANDS', $_ENV) === false || boolval($_ENV['LOG_COMMANDS']) === false) {
+		if (array_key_exists('LOG_COMMANDS', $_ENV) === false || $_ENV['LOG_COMMANDS'] == 'false') {
 			return true;
 		}
+
+		if ($this->setupLogDir() === false) {
+			return false;
+		}
+
 		$file = $this->getLogCmdFilePath();
 		$cmd  = implode(' ', $this->input->getRawArgs());
 
@@ -105,14 +134,17 @@ abstract class AbstractController extends CommandController {
 	 * @return void
 	 */
 	protected function logError($msg) {
-		if (array_key_exists('LOG_ERRORS', $_ENV) === false || boolval($_ENV['LOG_ERRORS']) === false) {
+		if (array_key_exists('LOG_ERRORS', $_ENV) === false || $_ENV['LOG_ERRORS'] == 'false') {
 			return true;
+		}
+		if ($this->setupLogDir() === false) {
+			return false;
 		}
 		$file = $this->getLogErrorFilePath();
 		$cmd  = implode(' ', $this->input->getRawArgs());
 
 		$log = Logger::instance();
-		$log->log($file, $cmd);
+		$log->log($file, $log->createLogString([$cmd, $msg]));
 	}
 
 	/**
