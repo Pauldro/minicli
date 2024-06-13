@@ -17,6 +17,7 @@ abstract class AbstractController extends ParentController {
 	const SUBCOMMANDS = [];
 	const NOTES = [];
 	const INTRO_DELIMITER = '/////////////////////////////////////////////////////////';
+	const REQUIRED_PARAMS = [];
 
 	public function handle() {
 		$this->display();
@@ -29,6 +30,7 @@ abstract class AbstractController extends ParentController {
 	protected function display() {
 		$this->displayUsage();
 		$this->displayOptions();
+		$this->displayRequiredParams();
 		$this->displayHelp();
 		$this->displaySubcommands();
 		$this->displayNotes();
@@ -58,6 +60,25 @@ abstract class AbstractController extends ParentController {
 		$printer->info('Options:');
 
 		foreach (static::OPTIONS as $option => $example) {
+			$printer->line(sprintf('%s%s%s', $printer->spaces(2), $this->getOptToLength($example, $optLength), $this->getOptDefinition($option)));
+		}
+	}
+
+	/**
+	 * Display Required Command Parameters
+	 * @return void
+	 */
+	protected function displayRequiredParams() {
+		if (empty(static::REQUIRED_PARAMS)) {
+			return true;
+		}
+
+		$printer = $this->getPrinter();
+		$optLength = $this->getLongestOptExampleLength() + 4;
+		$printer->info('Required:');
+
+		foreach (static::REQUIRED_PARAMS as $option) {
+			$example = static::OPTIONS[$option];
 			$printer->line(sprintf('%s%s%s', $printer->spaces(2), $this->getOptToLength($example, $optLength), $this->getOptDefinition($option)));
 		}
 	}
