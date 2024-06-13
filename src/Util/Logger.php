@@ -39,8 +39,19 @@ class Logger {
 		if (file_exists($file)) {
 			$content = file_get_contents($file);
 		}
-
 		$line = $this->createLogString([date('Ymd'), date('His'), $text]). PHP_EOL;
 		return file_put_contents($file, $content . $line);
+	}
+
+	/**
+	 * Clear Log File
+	 * @param  string $file  /path/to/file/
+	 * @return bool
+	 */
+	public function clear($file) {
+		if (file_exists($file) === false) {
+			return true;
+		}
+		return file_put_contents($file, '');
 	}
 }
