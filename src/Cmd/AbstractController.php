@@ -71,6 +71,24 @@ abstract class AbstractController extends CommandController {
 	 * @return bool
 	 */
 	protected function init() {
+		if ($this->initRequiredParams() === false) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Initialize App
+	 * @return bool
+	 */
+	protected function initRequiredParams() {
+		foreach (static::REQUIRED_PARAMS as $param) {
+			if ($this->hasParam($param) === false) {
+				$description = static::OPTIONS_DEFINITIONS[$param];
+				$use         = static::OPTIONS[$param];
+				return $this->error("Missing Parameter: $description ($use)");
+			}
+		}
 		return true;
 	}
 	
