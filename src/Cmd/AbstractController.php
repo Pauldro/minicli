@@ -13,6 +13,9 @@ use Pauldro\Minicli\Util\Logger;
 abstract class AbstractController extends CommandController {
 	const LOG_CMD_NAME   = 'commands.log';
 	const LOG_ERROR_NAME = 'errors.log';
+	const OPTIONS = [];
+	const OPTIONS_DEFINITIONS = [];
+	const REQUIRED_PARAMS = [];
 
 	/**
 	 * Return boolean value for parameter
