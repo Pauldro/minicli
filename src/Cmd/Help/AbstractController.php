@@ -48,7 +48,7 @@ abstract class AbstractController extends ParentController {
 	protected function displayUsage() {
 		$printer = $this->getPrinter();
 		$printer->info('Usage:');
-		$printer->line(sprintf('%s%s', $printer->spaces(2), static::COMMAND . ' [options]'));
+		$printer->line(sprintf('%s%s%s', $this->app->getSignature(), $printer->spaces(1), static::COMMAND . ' [options]'));
 	}
 
 	/**
