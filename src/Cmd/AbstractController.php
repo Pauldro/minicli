@@ -15,8 +15,13 @@ abstract class AbstractController extends CommandController {
 	const LOG_ERROR_NAME = 'errors.log';
 	const OPTIONS = [];
 	const OPTIONS_DEFINITIONS = [];
+	const OPTIONS_DEFINITIONS_OVERRIDE = [];
 	const REQUIRED_PARAMS = [];
+	const SENSITIVE_PARAM_VALUES = [];
 
+/* =============================================================
+	Parameter Functions
+============================================================= */
 	/**
 	 * Return boolean value for parameter
 	 * @param  string $param Parameter to get Value from
@@ -49,6 +54,9 @@ abstract class AbstractController extends CommandController {
 		return explode($delimeter, $this->getParam($param));
 	}
 
+/* =============================================================
+	Printer
+============================================================= */
 	/**
 	 * @return Printer
 	 */
@@ -129,6 +137,20 @@ abstract class AbstractController extends CommandController {
 		}
 		return mkdir($this->getLogDir());
 	}
+
+	/**
+	 * Sanitize Command for Log Use
+	 * @return string
+	 */
+	protected function sanitizeCmdForLog() {
+		$cmd = implode(' ', $this->input->getRawArgs());
+
+		foreach (static::SENSITIVE_PARAM_VALUES as $param) {
+			$find = "$param=" . $this->getParam($param);
+			$cmd = str_replace($find, "$param=***", $cmd);
+		}
+		return $cmd;
+	}
 	
 	/**
 	 * Log Command sent to App
@@ -144,7 +166,7 @@ abstract class AbstractController extends CommandController {
 		}
 
 		$file = $this->getLogCmdFilePath();
-		$cmd  = implode(' ', $this->input->getRawArgs());
+		$cmd  = $this->sanitizeCmdForLog();
 
 		$log = Logger::instance();
 		$log->log($file, $cmd);
@@ -162,7 +184,7 @@ abstract class AbstractController extends CommandController {
 			return false;
 		}
 		$file = $this->getLogErrorFilePath();
-		$cmd  = implode(' ', $this->input->getRawArgs());
+		$cmd  = $this->sanitizeCmdForLog();
 
 		$log = Logger::instance();
 		$log->log($file, $log->createLogString([$cmd, $msg]));
@@ -177,5 +199,19 @@ abstract class AbstractController extends CommandController {
 		$this->getPrinter()->error($msg);
 		$this->logError($msg);
 		return false;
+	}
+
+	/**
+	 * Display Success Message
+	 * @param  string $msg
+	 * @return true
+	 */
+	protected function success($msg) {
+		if ($this->hasFlag('--debug')) {
+			$this->printer()->success("Success: $msg");
+			return true;
+		}
+		$this->printer()->success($msg);
+		return true;
 	}
 }
