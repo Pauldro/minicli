@@ -7,6 +7,8 @@ use Pauldro\Minicli\Cmd\AbstractController as ParentController;
 /**
  * AbstractController
  * Handles Displaying the Help Commands
+ * 
+ * @property array $commandMap Array of Map Commands
  */
 abstract class AbstractController extends ParentController {
 	const COMMAND = '';
@@ -19,6 +21,8 @@ abstract class AbstractController extends ParentController {
 	const NOTES = [];
 	const INTRO_DELIMITER = '/////////////////////////////////////////////////////////';
 	const REQUIRED_PARAMS = [];
+
+	protected $commandMap = [];
 
 	public function handle() {
 		$this->display();
@@ -211,6 +215,33 @@ abstract class AbstractController extends ParentController {
 	}
 
 	/**
+	 * Return the Longest Command / Subcommand length
+	 * @return int
+	 */
+	protected function getLongestCommandSubcommandLength() {
+		$length = 0;
+
+		foreach ($this->commandMap as $command => $subcommands) {
+			if (strlen($command) > $length) {
+				$length = strlen($command);
+			}
+			if (is_array($subcommands)) {
+				foreach ($subcommands as $subcommand) {
+					if ($subcommand == 'default') {
+						continue;
+					}
+					$cmd =  '  ' . $subcommand;
+
+					if (strlen($cmd) > $length) {
+						$length = strlen($cmd);
+					}
+				}
+			}
+		}
+		return $length;
+	}
+
+	/**
 	 * Pad Command to Desired String Length
 	 * @param  string $cmd	  Command
 	 * @param  int	  $length Desired Length
@@ -230,5 +261,26 @@ abstract class AbstractController extends ParentController {
 			return '';
 		}
 		return static::COMMAND_DEFINITIONS[$cmd];
+	}
+
+/* =============================================================
+	Init Functions
+============================================================= */
+	/**
+	 * Initialize App
+	 * @return bool
+	 */
+	protected function init() {
+		return $this->initCommandMap();
+
+	}
+
+	/**
+	 * Initialize Command Map
+	 * @return bool
+	 */
+	protected function initCommandMap() {
+		$this->commandMap = $this->getApp()->command_registry->getCommandMap();
+		return true;
 	}
 }

@@ -11,6 +11,7 @@ abstract class AbstractHelpMenuController extends AbstractController  {
 	];
 
 	public function handle() {
+		$this->init();
 		$this->intro();
 		$this->display();
 	}
@@ -32,21 +33,63 @@ abstract class AbstractHelpMenuController extends AbstractController  {
 	 * @return void
 	 */
 	protected function displayCommands() {
-		$printer = $this->getPrinter();
-		$cmdLength = $this->getLongestCommandLength() + 4;
+		$cmdLength  = $this->getLongestCommandSubcommandLength() + 4;
 
-		foreach ($this->getApp()->command_registry->getCommandMap() as $command => $sub) {
-			$printer->newline();
-			$printer->line(sprintf('%s%s', $printer->out($this->getCommandToLength($command, $cmdLength), 'info'), $this->getCommandDefinition($command)));
-
-			if (is_array($sub)) {
-				foreach ($sub as $subcommand) {
-					if ($subcommand !== 'default') {
-						$printer->line(sprintf('%s%s', $printer->spaces(2), $subcommand));
-					}
-				}
+		foreach ($this->commandMap as $command => $subcommands) {
+			if ($command == 'test' || $command == 'help') {
+				continue;
 			}
+
+			if (is_array($subcommands) === false) {
+				$subcommands = [];
+			}
+			$this->displayCommand($cmdLength, $command, $subcommands);
 		}
+		$this->displayCommand($cmdLength, 'help', $this->commandMap['help']);
+	}
+
+	/**
+	 * Display Command Defintion along with subcommands
+	 * @param  int    $cmdLength
+	 * @param  string $command
+	 * @param  array  $subcommands
+	 * @return true
+	 */
+	protected function displayCommand($cmdLength, $command, $subcommands = []) {
+		$printer    = $this->getPrinter();
+		$this->displayCommandDefinition($cmdLength, $command);
+
+		foreach ($subcommands as $subcommand) {
+			if ($subcommand == 'default') {
+				continue;
+			}
+			$this->displayCommandDefinition($cmdLength, $command, $subcommand);
+		}
+		$printer->newline();
+		return true;
+	}
+
+	/**
+	 * Display Command Defintion
+	 * @param  int $cmdLength
+	 * @param  string $command
+	 * @param  string $subcommand
+	 * @return true
+	 */
+	protected function displayCommandDefinition($cmdLength, $command, $subcommand = 'default') {
+		$printer    = $this->getPrinter();
+		$handler = $this->getApp()->command_registry->getCallableController($command, $subcommand);
+		$printer->newline();
+
+		if ($subcommand == 'default') {
+			$line = sprintf('%s%s', $printer->out($this->getCommandToLength($command, $cmdLength), 'info'), $handler::DESCRIPTION);
+			$printer->line($line, false);
+			return true;
+		}
+		$cmd = $printer->spaces(2) . $subcommand;
+		$line = sprintf('%s%s', $printer->out($this->getCommandToLength($cmd, $cmdLength), 'info'), $handler::DESCRIPTION);
+		$printer->line($line, false);
+		return true;
 	}
 	
 	/**
