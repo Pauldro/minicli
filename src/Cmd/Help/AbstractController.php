@@ -14,6 +14,7 @@ abstract class AbstractController extends ParentController {
 	const COMMAND_DEFINITIONS = [];
 	const OPTIONS = [];
 	const OPTIONS_DEFINITIONS = [];
+	const OPTIONS_DEFINITIONS_OVERRIDE = [];
 	const SUBCOMMANDS = [];
 	const NOTES = [];
 	const INTRO_DELIMITER = '/////////////////////////////////////////////////////////';
@@ -186,6 +187,9 @@ abstract class AbstractController extends ParentController {
 	 * @return string
 	 */
 	protected function getOptDefinition($opt) {
+		if (array_key_exists($opt, static::OPTIONS_DEFINITIONS_OVERRIDE)) {
+			return static::OPTIONS_DEFINITIONS_OVERRIDE[$opt];
+		}
 		if (array_key_exists($opt, static::OPTIONS_DEFINITIONS) === false) {
 			return '';
 		}
