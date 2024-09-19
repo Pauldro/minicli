@@ -132,11 +132,6 @@ class Data implements \IteratorAggregate, \ArrayAccess {
 			}
 			return $this->setArray($value);
 		}
-		$method = 'set' . ucfirst($key);
-
-		if (method_exists($this, $method)) {
-			return $this->$method($value);
-		}
 
 		if (property_exists($this, $key)) {
 			$this->$key = $value;
@@ -154,7 +149,7 @@ class Data implements \IteratorAggregate, \ArrayAccess {
 	 */
 	public function setArray(array $data) {
 		foreach ($data as $key => $value) {
-			$this->set($key, $value);
+			$this->__set($key, $value);
 		}
 		return $this;
 	}
