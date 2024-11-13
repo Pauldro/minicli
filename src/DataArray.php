@@ -39,7 +39,7 @@ class DataArray implements \IteratorAggregate, \ArrayAccess, \Countable {
 	public function getJsonArray() {
 		$data = [];
 		foreach ($this->data as $item) {
-			$data[] = $item->data;
+			$data[] = $item->getJsonArray();
 		}
 		return $data;
 	}
