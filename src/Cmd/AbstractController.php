@@ -92,8 +92,8 @@ abstract class AbstractController extends CommandController {
 	protected function initRequiredParams() {
 		foreach (static::REQUIRED_PARAMS as $param) {
 			if ($this->hasParam($param) === false) {
-				$description = static::OPTIONS_DEFINITIONS[$param];
-				$use         = static::OPTIONS[$param];
+				$description = array_key_exists($param, static::OPTIONS_DEFINITIONS) ? static::OPTIONS_DEFINITIONS[$param] : $param;
+				$use         = array_key_exists($param, static::OPTIONS) ? static::OPTIONS[$param] : '';
 				return $this->error("Missing Parameter: $description ($use)");
 			}
 		}
