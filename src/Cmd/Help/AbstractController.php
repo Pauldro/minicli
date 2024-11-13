@@ -83,6 +83,9 @@ abstract class AbstractController extends ParentController {
 		$printer->info('Required:');
 
 		foreach (static::REQUIRED_PARAMS as $option) {
+			if (array_key_exists($option, static::REQUIRED_PARAMS) === false) {
+				continue;
+			}
 			$example = static::OPTIONS[$option];
 			$printer->line(sprintf('%s%s%s', $printer->spaces(2), $this->getOptToLength($example, $optLength), $this->getOptDefinition($option)));
 		}
