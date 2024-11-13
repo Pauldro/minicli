@@ -128,7 +128,6 @@ class DataArray implements \IteratorAggregate, \ArrayAccess, \Countable {
 	 */
 	public function remove($key) {
 		if(array_key_exists($key, $this->data)) {
-			$item = $this->data[$key];
 			unset($this->data[$key]); 
 		}
 		return $this;
