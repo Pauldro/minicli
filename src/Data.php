@@ -10,9 +10,9 @@
 class Data implements \IteratorAggregate, \ArrayAccess {
 	protected $data = [];
 
-	/* =============================================================
-		GET Functions
-	============================================================= */
+/* =============================================================
+	Retrival
+============================================================= */
 	/**
 	 * Returns the full array of properties set to this object
 	 *
@@ -75,37 +75,17 @@ class Data implements \IteratorAggregate, \ArrayAccess {
 	}
 
 	/**
-	 * Provides direct reference access to set values in the $data array
-	 * @param  string $key
-	 * @param  mixed $value
-	 * @return $this
+	 * Determines if the given index exists in this Data.
+	 * @param  int|string $key  Key of the item to check for existence.
+	 * @return bool             True if the item exists, false if not.
 	 */
-	public function __set($key, $value) {
-		$method = "set".ucfirst($key);
-		
-		if (method_exists($this, $method)) {
-			return $this->$method($value);
-		}
-		return $this->set($key, $value); 
+	public function has($key) {
+		return $this->__isset($key);
 	}
 
-	/**
-	 * Ensures that isset() and empty() work for this classes properties. 
-	 * @param string $key
-	 * @return bool
-	 */
-	public function __isset($key) {
-		return isset($this->data[$key]);
-	}
-
-	/**
-	 * Ensures that unset() works for this classes data. 
-	 * @param string $key
-	 */
-	public function __unset($key) {
-		$this->remove($key); 
-	}
-
+/* =============================================================
+	Manipulation - Setters
+============================================================= */
 	/**
 	 * Set a value to this object’s data
 	 *
@@ -155,6 +135,41 @@ class Data implements \IteratorAggregate, \ArrayAccess {
 	}
 
 	/**
+	 * Provides direct reference access to set values in the $data array
+	 * @param  string $key
+	 * @param  mixed $value
+	 * @return $this
+	 */
+	public function __set($key, $value) {
+		$method = "set".ucfirst($key);
+		
+		if (method_exists($this, $method)) {
+			return $this->$method($value);
+		}
+		return $this->set($key, $value); 
+	}
+
+	/**
+	 * Ensures that isset() and empty() work for this classes properties. 
+	 * @param string $key
+	 * @return bool
+	 */
+	public function __isset($key) {
+		return isset($this->data[$key]);
+	}
+
+/* =============================================================
+	Manipulation - Removal
+============================================================= */
+	/**
+	 * Ensures that unset() works for this classes data. 
+	 * @param string $key
+	 */
+	public function __unset($key) {
+		$this->remove($key); 
+	}
+
+	/**
 	 * Remove a previously set property
 	 * ~~~~~
 	 * $item->remove('some_property');
@@ -167,9 +182,9 @@ class Data implements \IteratorAggregate, \ArrayAccess {
 		return $this;
 	}
 
-	/* =============================================================
-		IteratorAggregate Interface Functions
-	============================================================= */
+/* =============================================================
+	IteratorAggregate Interface Functions
+============================================================= */
 	/**
 	 * Enables the object data properties to be iterable as an array
 	 * @return \ArrayObject
@@ -178,9 +193,9 @@ class Data implements \IteratorAggregate, \ArrayAccess {
 		return new \ArrayObject($this->data);
 	}
 
-	/* =============================================================
-		ArrayAccess Interface Functions
-	============================================================= */
+/* =============================================================
+	ArrayAccess Interface Functions
+============================================================= */
 	/**
 	 * Sets an index in the Array.
 	 * @param int|string              $key    Key of item to set.
@@ -214,20 +229,11 @@ class Data implements \IteratorAggregate, \ArrayAccess {
 	}
 
 	/**
-	 * Determines if the given index exists in this WireData.
+	 * Determines if the given index exists in this Data.
 	 * @param  int|string $key  Key of the item to check for existence.
 	 * @return bool             True if the item exists, false if not.
 	 */
 	public function offsetExists($key) {
-		return $this->__isset($key);
-	}
-
-	/**
-	 * Determines if the given index exists in this WireData.
-	 * @param  int|string $key  Key of the item to check for existence.
-	 * @return bool             True if the item exists, false if not.
-	 */
-	public function has($key) {
 		return $this->__isset($key);
 	}
 }
