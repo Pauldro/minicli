@@ -79,6 +79,15 @@ class DataArray implements \IteratorAggregate, \ArrayAccess, \Countable {
 		return end($this->data); 
 	}
 
+	/**
+	 * REturn new/blank item of the type that this DataArray holds
+	 * @return Data
+	 *
+	 */
+	public function makeBlankItem() {
+		return new Data();
+	}
+
 /* =============================================================
 	Setter Functions
 ============================================================= */
