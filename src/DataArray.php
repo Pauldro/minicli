@@ -11,7 +11,7 @@ class DataArray implements \IteratorAggregate, \ArrayAccess, \Countable {
 	protected $data = [];
 
 /* =============================================================
-	Getter Functions
+	Getters
 ============================================================= */
 	/**
 	 * Returns the value of the item at the given index, or null if not set. 
@@ -89,7 +89,7 @@ class DataArray implements \IteratorAggregate, \ArrayAccess, \Countable {
 	}
 
 /* =============================================================
-	Setter Functions
+	Setters
 ============================================================= */
 	/**
 	 * Set an item by key in the DataArray.
@@ -128,7 +128,7 @@ class DataArray implements \IteratorAggregate, \ArrayAccess, \Countable {
 	}
 
 /* =============================================================
-	Manipulation Functions
+	Removal
 ============================================================= */
 	/**
 	 * Remove the given item or index from the WireArray (if it exists).

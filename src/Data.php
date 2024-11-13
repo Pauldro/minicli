@@ -11,7 +11,7 @@ class Data implements \IteratorAggregate, \ArrayAccess {
 	protected $data = [];
 
 /* =============================================================
-	Retrival
+	Getters
 ============================================================= */
 	/**
 	 * Returns the full array of properties set to this object
@@ -84,7 +84,7 @@ class Data implements \IteratorAggregate, \ArrayAccess {
 	}
 
 /* =============================================================
-	Manipulation - Setters
+	Setters
 ============================================================= */
 	/**
 	 * Set a value to this object’s data
@@ -159,7 +159,7 @@ class Data implements \IteratorAggregate, \ArrayAccess {
 	}
 
 /* =============================================================
-	Manipulation - Removal
+	Removal
 ============================================================= */
 	/**
 	 * Ensures that unset() works for this classes data. 
