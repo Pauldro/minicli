@@ -81,6 +81,7 @@ abstract class AbstractController extends CommandController {
 	 */
 	protected function init() {
 		$this->initEnvTimeZone();
+		
 		if ($this->initRequiredParams() === false) {
 			return false;
 		}
@@ -96,8 +97,6 @@ abstract class AbstractController extends CommandController {
 		$abbr = timezone_name_from_abbr($sysTZ);
 		return date_default_timezone_set($abbr);
 	}
-
-	/**
 
 	/**
 	 * Initialize App

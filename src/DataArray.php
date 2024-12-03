@@ -14,17 +14,28 @@ class DataArray implements \IteratorAggregate, \ArrayAccess, \Countable {
 	Getters
 ============================================================= */
 	/**
-	 * Returns the value of the item at the given index, or null if not set. 
-	 * @param int|stringarray $key Provide any of the following:  
+	 * Return the value of the item at the given index, or null if not set. 
+	 * @param  int|string $key Provide any of the following:  
 	 * @return Data|null Value of item requested, or null if it doesn't exist.
 	 */
 	public function get($key) {
-		// check if the index is set and return it if so
-		if(isset($this->data[$key])) return $this->data[$key];
+		if ($this->has($key) === false) {
+			return null;
+		}
+		return $this->data[$key];
 	}
 
 	/**
-	 * Get a PHP array of all the items in this DataArray with original keys maintained 
+	 * Return
+	 * @param  int|string $key Provide any of the following:  
+	 * @return Data|null Value of item requested, or null if it doesn't exist.
+	 */
+	public function has($key) {
+		return array_key_exists($key, $this->data);
+	}
+
+	/**
+	 * Return a PHP array of all the items in this DataArray with original keys maintained 
 	 * @return array Copy of the array that DataArray uses internally. 
 	 */
 	public function getArray() {
@@ -45,7 +56,7 @@ class DataArray implements \IteratorAggregate, \ArrayAccess, \Countable {
 	}
 
 	/**
-	 * Returns a regular PHP array of all keys used in this DataArray.
+	 * Return a regular PHP array of all keys used in this DataArray.
 	 * @return array Keys used in the DataArray.
 	 */
 	public function getKeys() {
@@ -53,7 +64,7 @@ class DataArray implements \IteratorAggregate, \ArrayAccess, \Countable {
 	}
 
 	/**
-	 * Returns a regular PHP array of all values used in this DataArray.
+	 * Return a regular PHP array of all values used in this DataArray.
 	 * NOTE: this does not attempt to maintain original 
 	 * keys of the items. The returned array is reindexed from 0. 
 	 * @return array Values used in the DataArray.
@@ -63,7 +74,7 @@ class DataArray implements \IteratorAggregate, \ArrayAccess, \Countable {
 	}
 
 	/**
-	 * Returns the first item in the DataArray or boolean false if empty. 
+	 * Return the first item in the DataArray or boolean false if empty. 
 	 * Note that this resets the internal DataArray pointer, which would affect other active iterations. 
 	 * @return Data|mixed|bool
 	 */
@@ -80,7 +91,7 @@ class DataArray implements \IteratorAggregate, \ArrayAccess, \Countable {
 	}
 
 	/**
-	 * REturn new/blank item of the type that this DataArray holds
+	 * Return new/blank item of the type that this DataArray holds
 	 * @return Data
 	 *
 	 */
@@ -89,7 +100,7 @@ class DataArray implements \IteratorAggregate, \ArrayAccess, \Countable {
 	}
 
 	/**
-	 * Get a subset of the DatArray
+	 * Return subset of the DatArray
 	 *
 	 * Given a starting point and a number of items, returns a new DataArray of those items. 
 	 * If `$limit` is omitted, then it includes everything beyond the starting point. 
