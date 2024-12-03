@@ -14,6 +14,7 @@ abstract class AbstractController extends CommandController {
 	const LOG_CMD_NAME   = 'commands.log';
 	const LOG_ERROR_NAME = 'errors.log';
 	const OPTIONS = [];
+	const NOTES = [];
 	const OPTIONS_DEFINITIONS = [];
 	const OPTIONS_DEFINITIONS_OVERRIDE = [];
 	const REQUIRED_PARAMS = [];
