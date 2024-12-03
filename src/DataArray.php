@@ -88,6 +88,32 @@ class DataArray implements \IteratorAggregate, \ArrayAccess, \Countable {
 		return new Data();
 	}
 
+	/**
+	 * Get a subset of the DatArray
+	 *
+	 * Given a starting point and a number of items, returns a new DataArray of those items. 
+	 * If `$limit` is omitted, then it includes everything beyond the starting point. 
+	 * 
+	 * ~~~~~
+	 * // Get first 3 items
+	 * $myItems = $items->slice(0, 3); 
+	 * ~~~~~
+	 *
+	 * @param  int $start Starting index. 
+	 * @param  int $limit Number of items to include. If omitted, includes the rest of the array.
+	 * @return DataArray Returns a new WireArray.
+	 */
+	public function subset($start, $limit = 0) {
+		if ($limit) {
+			$slice = array_slice($this->data, $start, $limit);
+		} else {
+			$slice = array_slice($this->data, $start);
+		}
+		$items = new static(); 
+		$items->setArray($slice); 
+		return $items; 
+	}
+
 /* =============================================================
 	Setters
 ============================================================= */
