@@ -5,4 +5,4 @@ project.cson
 .vscode/
 
 
-.vendor/
+vendor/
