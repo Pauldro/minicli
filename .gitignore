@@ -3,3 +3,6 @@
 .ftpignore
 project.cson
 .vscode/
+
+
+.vendor/
