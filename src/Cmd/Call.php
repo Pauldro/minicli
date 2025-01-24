@@ -26,21 +26,25 @@ class Call extends CommandCall {
 	 * @return void
 	 */
 	protected function parseCommand($argv) {
-		parent::parseCommand($argv);
-
 		foreach ($argv as $arg) {
-			if (strpos($arg, '=') === true) {
-				continue;
-			}
+            $pair = explode('=', $arg, 2);
 
-			if (substr($arg, 0, 2) == '--') {
-				continue;
-			}
+            if (count($pair) == 2) {
+                $this->params[$pair[0]] = $pair[1];
+                continue;
+            }
 
+            if (substr($arg, 0, 2) == '--') {
+                $this->flags[] = $arg;
+                continue;
+            }
+			
 			if (substr($arg, 0, 1) == '-') {
 				$this->flags[] = $arg;
 				continue;
 			}
-		}
+
+            $this->args[] = $arg;
+        }
 	}
 }
