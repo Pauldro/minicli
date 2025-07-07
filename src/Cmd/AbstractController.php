@@ -167,7 +167,7 @@ abstract class AbstractController extends CommandController {
 	
 	/**
 	 * Log Command sent to App
-	 * @return void
+	 * @return bool
 	 */
 	protected function logCommand() {
 		if (array_key_exists('LOG_COMMANDS', $_ENV) === false || $_ENV['LOG_COMMANDS'] == 'false') {
@@ -183,6 +183,7 @@ abstract class AbstractController extends CommandController {
 
 		$log = Logger::instance();
 		$log->log($file, $cmd);
+		return true;
 	}
 
 	/**
