@@ -47,17 +47,18 @@ abstract class AbstractController extends ParentController {
 
 	/**
 	 * Display Command Usage
-	 * @return void
+	 * @return bool
 	 */
 	protected function displayUsage() {
 		$printer = $this->getPrinter();
 		$printer->info('Usage:');
 		$printer->line(sprintf('%s%s%s', $this->app->getSignature(), $printer->spaces(1), static::COMMAND . ' [options]'));
+		return true;
 	}
 
 	/**
 	 * Display Command Options
-	 * @return void
+	 * @return bool
 	 */
 	protected function displayOptions() {
 		$printer = $this->getPrinter();
@@ -67,11 +68,12 @@ abstract class AbstractController extends ParentController {
 		foreach (static::OPTIONS as $option => $example) {
 			$printer->line(sprintf('%s%s%s', $printer->spaces(2), $this->getOptToLength($example, $optLength), $this->getOptDefinition($option)));
 		}
+		return true;
 	}
 
 	/**
 	 * Display Required Command Parameters
-	 * @return void
+	 * @return bool
 	 */
 	protected function displayRequiredParams() {
 		if (empty(static::REQUIRED_PARAMS)) {
@@ -89,11 +91,12 @@ abstract class AbstractController extends ParentController {
 			$example = static::OPTIONS[$option];
 			$printer->line(sprintf('%s%s%s', $printer->spaces(2), $this->getOptToLength($example, $optLength), $this->getOptDefinition($option)));
 		}
+		return true;
 	}
 
 	/**
 	 * Display Subcommands
-	 * @return void
+	 * @return bool
 	 */
 	protected function displaySubcommands() {
 		$printer = $this->getPrinter();
@@ -105,11 +108,12 @@ abstract class AbstractController extends ParentController {
 		foreach (static::SUBCOMMANDS as $cmd) {
 			$printer->line(sprintf('%s%s%s%s%s', $printer->spaces(2), 'help ', static::COMMAND, ' ', $cmd));
 		}
+		return true;
 	}
 
 	/**
 	 * Display Notes
-	 * @return void
+	 * @return bool
 	 */
 	protected function displayNotes() {
 		$printer = $this->getPrinter();
@@ -121,33 +125,39 @@ abstract class AbstractController extends ParentController {
 		foreach (static::NOTES as $line) {
 			$printer->line(sprintf('%s%s%s', $printer->spaces(2), ' ', $line));
 		}
+		return true;
 	}
 
 	/**
 	 * Display Command Help
-	 * @return void
+	 * @return bool
 	 */
 	protected function displayHelp() {
 		$printer = $this->getPrinter();
 		$printer->info('Help:');
 		$printer->line(sprintf('%s%s', $printer->spaces(2), static::DESCRIPTION));
+		return true;
 	}
 
 	/**
 	 * Display Subcommand
-	 * @return string
+	 * @return bool
 	 */
 	protected function displaySubcommand() {
-		if (in_array($this->input->lastArg(), static::SUBCOMMANDS)) {
-			$reflector = new ReflectionClass(get_class($this));
-			$baseNs = $reflector->getNamespaceName();
-			$ns = $baseNs . '\\' . ucfirst(static::COMMAND) . '\\';
-			$class = $ns . ucfirst($this->input->lastArg()) . 'Controller';
-			$handler = new $class();
-			$handler->boot($this->app);
-			$handler->handle();
+		if (in_array($this->input->lastArg(), static::SUBCOMMANDS) === false) {
 			return true;
 		}
+		$reflector = new ReflectionClass(get_class($this));
+		$baseNs = $reflector->getNamespaceName();
+		$ns = $baseNs . '\\' . ucfirst(static::COMMAND) . '\\';
+		$class = $ns . ucfirst($this->input->lastArg()) . 'Controller';
+		if (class_exists($class) === false) {
+			return $this->error("Controller not found: $class");
+		}
+		$handler = new $class();
+		$handler->boot($this->app);
+		$handler->handle();
+		return true;
 	}
 
 	/**
