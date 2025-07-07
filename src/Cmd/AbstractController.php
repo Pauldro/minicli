@@ -173,6 +173,10 @@ abstract class AbstractController extends CommandController {
 		if (array_key_exists('LOG_COMMANDS', $_ENV) === false || $_ENV['LOG_COMMANDS'] == 'false') {
 			return true;
 		}
+		
+		if (array_key_exists('LOG.COMMANDS', $_ENV) === false || $_ENV['LOG.COMMANDS'] == 'false') {
+			return true;
+		}
 
 		if ($this->setupLogDir() === false) {
 			return false;
@@ -188,10 +192,13 @@ abstract class AbstractController extends CommandController {
 
 	/**
 	 * Log Command sent to App
-	 * @return void
+	 * @return bool
 	 */
 	protected function logError($msg) {
 		if (array_key_exists('LOG_ERRORS', $_ENV) === false || $_ENV['LOG_ERRORS'] == 'false') {
+			return true;
+		}
+		if (array_key_exists('LOG.ERRORS', $_ENV) === false || $_ENV['LOG.ERRORS'] == 'false') {
 			return true;
 		}
 		if ($this->setupLogDir() === false) {
@@ -202,6 +209,7 @@ abstract class AbstractController extends CommandController {
 
 		$log = Logger::instance();
 		$log->log($file, $log->createLogString([$cmd, $msg]));
+		return true;
 	}
 
 	/**
